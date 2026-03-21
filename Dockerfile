@@ -2,12 +2,9 @@
 FROM eclipse-temurin:11-jdk AS build
 WORKDIR /app
 
-# Cài đặt wget (mặc dù một số bản slim đã có sẵn nhưng cứ để cho chắc)
-RUN apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/*
 
-# Tải MySQL JDBC Driver 8.0.33 - ĐÃ SỬA URL CHÍNH XÁC
-RUN mkdir -p lib && \
-    wget https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.0.33/mysql-connector-j-8.0.33.jar -O lib/mysql-connector.jar
+# Copy MySQL JDBC driver from local lib/ directory
+COPY lib/mysql-connector-java-8.0.33.jar lib/mysql-connector.jar
 
 # Copy code và biên dịch
 COPY . .
