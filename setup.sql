@@ -1,9 +1,10 @@
 -- =====================================================
--- Distributed Print Ring - Optional Local Setup for 2 Nodes
+-- Distributed Print Ring - Optional Local Setup for 6 Nodes
 -- The application auto-creates tables if the database already exists.
 -- Default shared-database table names:
 --   node1_print_jobs / node1_ring_metadata
---   node2_print_jobs / node2_ring_metadata
+--   ...
+--   node6_print_jobs / node6_ring_metadata
 -- =====================================================
 
 CREATE DATABASE IF NOT EXISTS print_ring_demo CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -32,3 +33,11 @@ CREATE TABLE IF NOT EXISTS node1_ring_metadata (
 
 CREATE TABLE IF NOT EXISTS node2_print_jobs LIKE node1_print_jobs;
 CREATE TABLE IF NOT EXISTS node2_ring_metadata LIKE node1_ring_metadata;
+CREATE TABLE IF NOT EXISTS node3_print_jobs LIKE node1_print_jobs;
+CREATE TABLE IF NOT EXISTS node3_ring_metadata LIKE node1_ring_metadata;
+CREATE TABLE IF NOT EXISTS node4_print_jobs LIKE node1_print_jobs;
+CREATE TABLE IF NOT EXISTS node4_ring_metadata LIKE node1_ring_metadata;
+CREATE TABLE IF NOT EXISTS node5_print_jobs LIKE node1_print_jobs;
+CREATE TABLE IF NOT EXISTS node5_ring_metadata LIKE node1_ring_metadata;
+CREATE TABLE IF NOT EXISTS node6_print_jobs LIKE node1_print_jobs;
+CREATE TABLE IF NOT EXISTS node6_ring_metadata LIKE node1_ring_metadata;

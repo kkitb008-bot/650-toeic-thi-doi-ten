@@ -71,7 +71,7 @@ public class Main {
     }
 
     private static String defaultPeers() {
-        return "localhost:2001,localhost:2002";
+        return "localhost:2001,localhost:2002,localhost:2003,localhost:2004,localhost:2005,localhost:2006";
     }
 
     private static String firstNonBlank(String... values) {

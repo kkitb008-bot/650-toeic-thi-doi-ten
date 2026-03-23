@@ -1,6 +1,6 @@
 # Distributed Print Ring
 
-This project models a distributed print service with 2 servers arranged in a virtual ring and 1 client that submits print jobs.
+This project models a distributed print service with 6 servers arranged in a virtual ring and 1 client that submits print jobs.
 
 The focus is the Token Ring algorithm. Real printing is not required; each server writes a reasonable print log to MySQL and console output.
 
@@ -21,11 +21,11 @@ So in this implementation:
 
 ## System model
 
-- 2 print servers in one virtual ring
+- 6 print servers in one virtual ring
 - 1 client sends print or cancel requests to any server
 - Each server keeps a local queue of pending jobs
 - Only the server holding the token may enter the critical section and update its print log
-- Print results are stored in MySQL tables `print_jobs` and `ring_metadata`
+- Print results are stored in MySQL tables `nodeX_print_jobs` and `nodeX_ring_metadata`
 
 ## Message protocol
 
@@ -90,11 +90,15 @@ javac -cp "lib/*" -d build src/server/*.java src/client/*.java
 
 ## Local run example
 
-Run 2 nodes in 2 terminals:
+Run 6 nodes in 6 terminals:
 
 ```powershell
-$env:NODE_ID="1"; $env:PORT="2001"; $env:MYSQL_URL="jdbc:mysql://localhost:3306/print_ring_demo"; $env:PEERS="localhost:2001,localhost:2002"; java -cp "build;lib/*" server.Main
-$env:NODE_ID="2"; $env:PORT="2002"; $env:MYSQL_URL="jdbc:mysql://localhost:3306/print_ring_demo"; $env:PEERS="localhost:2001,localhost:2002"; java -cp "build;lib/*" server.Main
+$env:NODE_ID="1"; $env:PORT="2001"; $env:MYSQL_URL="jdbc:mysql://localhost:3306/print_ring_demo"; $env:PEERS="localhost:2001,localhost:2002,localhost:2003,localhost:2004,localhost:2005,localhost:2006"; java -cp "build;lib/*" server.Main
+$env:NODE_ID="2"; $env:PORT="2002"; $env:MYSQL_URL="jdbc:mysql://localhost:3306/print_ring_demo"; $env:PEERS="localhost:2001,localhost:2002,localhost:2003,localhost:2004,localhost:2005,localhost:2006"; java -cp "build;lib/*" server.Main
+$env:NODE_ID="3"; $env:PORT="2003"; $env:MYSQL_URL="jdbc:mysql://localhost:3306/print_ring_demo"; $env:PEERS="localhost:2001,localhost:2002,localhost:2003,localhost:2004,localhost:2005,localhost:2006"; java -cp "build;lib/*" server.Main
+$env:NODE_ID="4"; $env:PORT="2004"; $env:MYSQL_URL="jdbc:mysql://localhost:3306/print_ring_demo"; $env:PEERS="localhost:2001,localhost:2002,localhost:2003,localhost:2004,localhost:2005,localhost:2006"; java -cp "build;lib/*" server.Main
+$env:NODE_ID="5"; $env:PORT="2005"; $env:MYSQL_URL="jdbc:mysql://localhost:3306/print_ring_demo"; $env:PEERS="localhost:2001,localhost:2002,localhost:2003,localhost:2004,localhost:2005,localhost:2006"; java -cp "build;lib/*" server.Main
+$env:NODE_ID="6"; $env:PORT="2006"; $env:MYSQL_URL="jdbc:mysql://localhost:3306/print_ring_demo"; $env:PEERS="localhost:2001,localhost:2002,localhost:2003,localhost:2004,localhost:2005,localhost:2006"; java -cp "build;lib/*" server.Main
 ```
 
 Run the client:
@@ -105,11 +109,11 @@ java -cp "build;lib/*" client.Client
 
 ## Railway deployment
 
-Deploy 2 Railway services from the same repository.
+Deploy 6 Railway services from the same repository.
 
 Each service needs:
 
-- `NODE_ID`: `1` or `2`
+- `NODE_ID`: `1` to `6`
 - `PORT`: `8080`
 - `BIND_HOST`: `0.0.0.0`
 - `MYSQL_URL`: database URL
@@ -122,7 +126,7 @@ Each service needs:
 Example `PEERS`:
 
 ```text
-node1.railway.internal:8080,node2.railway.internal:8080
+node1.railway.internal:8080,node2.railway.internal:8080,node3.railway.internal:8080,node4.railway.internal:8080,node5.railway.internal:8080,node6.railway.internal:8080
 ```
 
 The repo already includes:
@@ -140,4 +144,4 @@ Railway docs used for the deployment assumptions:
 
 If you want to pre-create the local shared database, use [setup.sql](C:/Users/Administrator/Desktop/DistributedSystemProject/setup.sql).
 
-In normal use, the application will auto-create node-specific tables such as `node1_print_jobs`, `node1_ring_metadata`, `node2_print_jobs`, and `node2_ring_metadata` after the target database exists.
+In normal use, the application will auto-create node-specific tables such as `node1_print_jobs`, `node1_ring_metadata`, ..., `node6_print_jobs`, and `node6_ring_metadata` after the target database exists.

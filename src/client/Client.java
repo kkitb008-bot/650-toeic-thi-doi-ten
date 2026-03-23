@@ -20,7 +20,11 @@ public class Client extends JFrame {
 
     private static final NodeEndpoint[] DEFAULT_ENDPOINTS = new NodeEndpoint[]{
             new NodeEndpoint("localhost", 2001),
-            new NodeEndpoint("localhost", 2002)
+            new NodeEndpoint("localhost", 2002),
+            new NodeEndpoint("localhost", 2003),
+            new NodeEndpoint("localhost", 2004),
+            new NodeEndpoint("localhost", 2005),
+            new NodeEndpoint("localhost", 2006)
     };
 
     private final NodeEndpoint[] endpoints;
